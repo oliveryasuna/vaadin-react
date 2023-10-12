@@ -1,0 +1,32 @@
+# IntelliJ
+#--------------------------------------------------
+
+.idea/
+
+*.iml
+
+# Gradle
+#--------------------------------------------------
+
+/.gradle/
+
+/build/
+
+!/gradle/wrapper/gradle-wrapper.jar
+
+# Vaadin
+#--------------------------------------------------
+
+/frontend/generated/
+
+/frontend/index.html
+
+# Node/NPM
+#--------------------------------------------------
+
+/node_modules/
+
+# Miscellaneous
+#--------------------------------------------------
+
+/src/main/resources/application-local.properties
