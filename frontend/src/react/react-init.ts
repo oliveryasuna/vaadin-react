@@ -19,5 +19,3 @@ window.Vaadin.React = (window.Vaadin.React ?? {
     window.Vaadin.React.pendingUpdates.get(componentName)!.enqueue(serializedProps);
   })
 });
-
-console.info('Vaadin React integration initialized.');
