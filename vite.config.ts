@@ -1,9 +1,11 @@
-import { UserConfigFn } from 'vite';
-import { overrideVaadinConfig } from './vite.generated';
+import type {ConfigEnv, UserConfigFn} from 'vite';
+import {overrideVaadinConfig} from './vite.generated';
+import reactPlugin from '@vitejs/plugin-react';
 
-const customConfig: UserConfigFn = (env) => ({
-  // Here you can add custom Vite parameters
-  // https://vitejs.dev/config/
-});
+const customConfig: UserConfigFn = ((_env: ConfigEnv) => ({
+  plugins: [
+    reactPlugin()
+  ]
+}));
 
 export default overrideVaadinConfig(customConfig);

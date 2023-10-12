@@ -1,7 +1,7 @@
 import {Queue} from 'typescript-collections';
 
 window.Vaadin = (window.Vaadin ?? {});
-window.Vaadin.React = {
+window.Vaadin.React = (window.Vaadin.React ?? {
   components: {},
   pendingUpdates: new Map(),
   scheduleUpdate: ((componentName: ReactComponentName, serializedProps: string): void => {
@@ -18,4 +18,6 @@ window.Vaadin.React = {
 
     window.Vaadin.React.pendingUpdates.get(componentName)!.enqueue(serializedProps);
   })
-};
+});
+
+console.info('Vaadin React integration initialized.');

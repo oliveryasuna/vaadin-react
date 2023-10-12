@@ -1,6 +1,5 @@
 package com.oliveryasuna.vaadinreact;
 
-import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
@@ -14,7 +13,6 @@ import com.vaadin.flow.component.page.Viewport;
 @NpmPackage(value = "@types/react", version = "18.2.0")
 @NpmPackage(value = "@types/react-dom", version = "18.2.0")
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
-@JsModule("./src/react/react-init.ts")
 public final class VaadinAppShellConfigurator implements AppShellConfigurator {
 
   // Constructors

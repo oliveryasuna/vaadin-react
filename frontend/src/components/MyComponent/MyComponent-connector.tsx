@@ -2,6 +2,7 @@ import MyComponent, {MyComponentProps} from './MyComponent';
 import {createRoot} from 'react-dom/client';
 import {registerConnector, registerUpdater} from 'Frontend/src/react/react-utils';
 import React from 'react';
+import 'Frontend/src/react/react-init';
 
 const MyComponentWrapper: React.FC<MyComponentProps> = ((initialProps: MyComponentProps): JSX.Element => {
   const [currentProps, setProps] = React.useState(initialProps);
@@ -23,3 +24,5 @@ const MyComponentConnector: ReactComponentConnector = ((target: HTMLElement, ser
 });
 
 registerConnector('MyComponent', MyComponentConnector);
+
+console.info('MyComponent connector loaded!');

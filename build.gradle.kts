@@ -17,10 +17,6 @@ idea {
   }
 }
 
-vaadin {
-  frontendHotdeploy = true
-}
-
 dependencies {
   // BOMs.
   implementation(platform(libs.bom.springBoot))
