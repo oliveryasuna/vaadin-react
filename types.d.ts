@@ -1,5 +1,6 @@
 import {CSSResultGroup} from 'lit/development';
 import {Queue} from 'typescript-collections';
+import React from 'react';
 
 declare global {
   declare module '*.css' {
@@ -8,27 +9,25 @@ declare global {
     export default content;
   }
 
-  type CustomEventListener<E extends Event> = (e: E) => void;
-
   // React
   //--------------------------------------------------
 
-  type ReactComponentName = keyof Window['Vaadin']['React']['components'];
-
   type ReactComponentConnector = ((target: HTMLElement, serializedProps: string) => void);
+  type ReactComponentConnectorComponent<Props = {}> = React.FC<Props>;
+
   type ReactComponentUpdater = ((serializedProps: string) => void);
+
+  type ReactComponentHelper = {
+    connector?: ReactComponentConnector,
+    updater?: ReactComponentUpdater
+  };
 
   interface Window {
     Vaadin: {
       React: {
-        components: {
-          MyComponent?: {
-            connector?: ReactComponentConnector,
-            updater?: ReactComponentUpdater
-          }
-        },
-        pendingUpdates: Map<ReactComponentName, Queue<string>>,
-        scheduleUpdate: ((componentName: ReactComponentName, serializedProps: string) => void)
+        components: Record<string, ReactComponentHelper>;
+        pendingUpdates: Map<string, Queue<string>>,
+        scheduleUpdate: ((id: string, serializedProps: string) => void)
       }
     };
   }

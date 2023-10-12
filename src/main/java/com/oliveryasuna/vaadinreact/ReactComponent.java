@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.page.PendingJavaScriptResult;
+import com.vaadin.flow.dom.Element;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -13,8 +14,6 @@ public class ReactComponent<PROPS> extends Component {
   //--------------------------------------------------
 
   protected static final JsonMapper JSON_MAPPER = new JsonMapper();
-
-  protected static final String SCHEDULE_UPDATE_FUNCTION = "window.Vaadin.React.scheduleUpdate";
 
   // Constructors
   //--------------------------------------------------
@@ -39,13 +38,15 @@ public class ReactComponent<PROPS> extends Component {
   //--------------------------------------------------
 
   protected PendingJavaScriptResult bootstrapReact() {
-    return getElement()
-        .executeJs(resolveConnectorFunction(getComponentName()) + "($0,$1)", getElement(), serializeProps());
+    final Element element = getElement();
+
+    return element
+        .executeJs("window.Vaadin.React.components." + getComponentName() + ".connector($0,$1)", element, serializeProps());
   }
 
   protected PendingJavaScriptResult scheduleUpdate() {
     return getElement()
-        .executeJs(SCHEDULE_UPDATE_FUNCTION + "($0,$1)", getComponentName(), serializeProps());
+        .executeJs("window.Vaadin.React.scheduleUpdate($0,$1)", getComponentName(), serializeProps());
   }
 
   protected PROPS createProps() {
@@ -64,10 +65,6 @@ public class ReactComponent<PROPS> extends Component {
     } catch(final JsonProcessingException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  protected String resolveConnectorFunction(final String componentName) {
-    return ("window.Vaadin.React.components." + componentName + ".connector");
   }
 
   protected void setPropsInternal(final PROPS props) {

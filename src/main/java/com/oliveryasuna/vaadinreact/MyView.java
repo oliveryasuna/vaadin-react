@@ -1,7 +1,6 @@
 package com.oliveryasuna.vaadinreact;
 
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.router.Route;
 
 @Route("")
@@ -13,13 +12,19 @@ public class MyView extends Div {
   public MyView() {
     super();
 
-    add(new Span("Hello, World!"));
+    final MySimpleComponent mySimpleComponent1 = new MySimpleComponent();
+    mySimpleComponent1.setName("Simple1");
 
-    final MyComponent myComponent = new MyComponent();
+//    final MySimpleComponent mySimpleComponent2 = new MySimpleComponent();
+//    mySimpleComponent2.setName("Simple2");
+//
+//    add(mySimpleComponent1, mySimpleComponent2);
+    add(mySimpleComponent1);
 
-    myComponent.setName("Oliver");
+    final MyVerboseComponent myVerboseComponent = new MyVerboseComponent();
+    myVerboseComponent.setName("Verbose");
 
-    add(myComponent);
+    add(myVerboseComponent);
   }
 
 }
