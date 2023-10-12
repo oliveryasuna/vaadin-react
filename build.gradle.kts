@@ -41,10 +41,6 @@ tasks {
     targetCompatibility = "17"
   }
 
-  vaadinPrepareFrontend {
-    println("VAADIN_PREPARE_FRONTEND")
-  }
-
   // `vaadinPrepareFrontend` is a task provided by the Vaadin Gradle plugin.
   // It is used to prepare the frontend resources for the Vaadin application.
   // This means that various resources in the `frontend` directory are modified.
