@@ -12,19 +12,13 @@ public class MyView extends Div {
   public MyView() {
     super();
 
-    final MySimpleComponent mySimpleComponent1 = new MySimpleComponent();
-    mySimpleComponent1.setName("Simple1");
+    final MyComponent myComponent1 = new MyComponent();
+    myComponent1.setName("Matti");
 
-//    final MySimpleComponent mySimpleComponent2 = new MySimpleComponent();
-//    mySimpleComponent2.setName("Simple2");
-//
-//    add(mySimpleComponent1, mySimpleComponent2);
-    add(mySimpleComponent1);
+    final MyComponent myComponent2 = new MyComponent();
+    myComponent2.setName("Oliver");
 
-    final MyVerboseComponent myVerboseComponent = new MyVerboseComponent();
-    myVerboseComponent.setName("Verbose");
-
-    add(myVerboseComponent);
+    add(myComponent1, myComponent2);
   }
 
 }

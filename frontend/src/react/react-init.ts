@@ -1,21 +1,31 @@
 import {Queue} from 'typescript-collections';
 
-window.Vaadin = (window.Vaadin ?? {});
-window.Vaadin.React = (window.Vaadin.React ?? {
+window.VaadinReact = (window.VaadinReact ?? {
   components: {},
   pendingUpdates: new Map(),
-  scheduleUpdate: ((id: string, serializedProps: string): void => {
+  scheduleUpdate: ((componentName: string, reactId: ReactId, serializedProps: string): void => {
+    if(!window.VaadinReact.components![componentName]) {
+      throw (new Error(`Component ${componentName} not registered.`));
+    }
+
+    const update: ReactPendingUpdate = {
+      reactId: reactId,
+      serializedProps: serializedProps
+    };
+
     // If the component already has an updater, use it.
-    if(window.Vaadin.React.components[id]?.updater) {
-      window.Vaadin.React.components[id]!.updater!(serializedProps);
+    if(window.VaadinReact.components![componentName]?.updaters.has(reactId)) {
+      window.VaadinReact.components![componentName]!.updaters.get(reactId)!(update.serializedProps);
 
       return;
     }
 
-    if(!window.Vaadin.React.pendingUpdates.get(id)) {
-      window.Vaadin.React.pendingUpdates.set(id, new Queue());
+    const key: ReactPendingUpdatesKey = `${componentName}-${reactId}`;
+
+    if(!window.VaadinReact.pendingUpdates!.get(key)) {
+      window.VaadinReact.pendingUpdates!.set(key, new Queue());
     }
 
-    window.Vaadin.React.pendingUpdates.get(id)!.enqueue(serializedProps);
+    window.VaadinReact.pendingUpdates!.get(key)!.enqueue(update);
   })
 });

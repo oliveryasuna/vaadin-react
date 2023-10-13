@@ -12,23 +12,33 @@ declare global {
   // React
   //--------------------------------------------------
 
-  type ReactComponentConnector = ((target: HTMLElement, serializedProps: string) => void);
-  type ReactComponentConnectorComponent<Props = {}> = React.FC<Props>;
+  type ReactId = string;
+
+  type ReactComponentConnector = ((target: HTMLElement, reactId: ReactId, serializedInitialProps: string) => void);
+  type ReactComponentConnectorComponentProps<Props> = {
+    reactId: ReactId,
+    initialProps: Props
+  }
+  type ReactComponentConnectorComponent<Props = {}> = React.FC<ReactComponentConnectorComponentProps<Props>>;
 
   type ReactComponentUpdater = ((serializedProps: string) => void);
 
   type ReactComponentHelper = {
-    connector?: ReactComponentConnector,
-    updater?: ReactComponentUpdater
+    connector: ReactComponentConnector,
+    updaters: Map<ReactId, ReactComponentUpdater>
   };
 
+  type ReactPendingUpdate = {
+    reactId: ReactId,
+    serializedProps: string
+  };
+  type ReactPendingUpdatesKey = `${string}-${ReactId}`
+
   interface Window {
-    Vaadin: {
-      React: {
-        components: Record<string, ReactComponentHelper>;
-        pendingUpdates: Map<string, Queue<string>>,
-        scheduleUpdate: ((id: string, serializedProps: string) => void)
-      }
+    VaadinReact: {
+      components?: Record<string, ReactComponentHelper>;
+      pendingUpdates?: Map<ReactPendingUpdatesKey, Queue<ReactPendingUpdate>>,
+      scheduleUpdate?: ((componentName: string, reactId: ReactId, serializedProps: string) => void)
     };
   }
 }

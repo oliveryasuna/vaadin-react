@@ -6,14 +6,14 @@ import com.vaadin.flow.component.dependency.JsModule;
 import java.io.Serializable;
 
 @Tag("div")
-@JsModule("./src/components/MySimpleComponent/MySimpleComponent.tsx")
-public class MySimpleComponent extends ReactComponent<MySimpleComponent.Props> {
+@JsModule("./src/components/MyComponent/MyComponent.tsx")
+public class MyComponent extends ReactComponent<MyComponent.Props> {
 
   // Constructor
   //--------------------------------------------------
 
-  public MySimpleComponent() {
-    super("MySimpleComponent", Props.class);
+  public MyComponent() {
+    super("MyComponent", Props.class);
 
     bootstrapReact();
   }

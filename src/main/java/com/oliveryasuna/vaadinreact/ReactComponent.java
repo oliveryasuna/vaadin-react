@@ -7,6 +7,7 @@ import com.vaadin.flow.component.page.PendingJavaScriptResult;
 import com.vaadin.flow.dom.Element;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
 
 public class ReactComponent<PROPS> extends Component {
 
@@ -30,9 +31,12 @@ public class ReactComponent<PROPS> extends Component {
 
   private final String componentName;
 
-  private PROPS props;
+  private final String reactId = UUID.randomUUID()
+      .toString();
 
   private final Class<? extends PROPS> propsClass;
+
+  private PROPS props;
 
   // Methods
   //--------------------------------------------------
@@ -41,12 +45,12 @@ public class ReactComponent<PROPS> extends Component {
     final Element element = getElement();
 
     return element
-        .executeJs("window.Vaadin.React.components." + getComponentName() + ".connector($0,$1)", element, serializeProps());
+        .executeJs("window.VaadinReact.components." + getComponentName() + ".connector($0,$1,$2)", element, getReactId(), serializeProps());
   }
 
   protected PendingJavaScriptResult scheduleUpdate() {
     return getElement()
-        .executeJs("window.Vaadin.React.scheduleUpdate($0,$1)", getComponentName(), serializeProps());
+        .executeJs("window.VaadinReact.scheduleUpdate($0,$1,$2)", getComponentName(), getReactId(), serializeProps());
   }
 
   protected PROPS createProps() {
@@ -78,6 +82,14 @@ public class ReactComponent<PROPS> extends Component {
     return componentName;
   }
 
+  public String getReactId() {
+    return reactId;
+  }
+
+  public Class<? extends PROPS> getPropsClass() {
+    return propsClass;
+  }
+
   public PROPS getProps() {
     if(props == null) {
       props = createProps();
@@ -89,10 +101,6 @@ public class ReactComponent<PROPS> extends Component {
   public void setProps(final PROPS props) {
     setPropsInternal(props);
     scheduleUpdate();
-  }
-
-  public Class<? extends PROPS> getPropsClass() {
-    return propsClass;
   }
 
 }
