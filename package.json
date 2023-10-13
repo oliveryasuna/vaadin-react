@@ -3,6 +3,9 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@emotion/react": "11.11.1",
+    "@emotion/styled": "11.11.0",
+    "@mui/material": "5.14.13",
     "@polymer/polymer": "3.5.1",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.0",
@@ -97,6 +100,9 @@
   },
   "vaadin": {
     "dependencies": {
+      "@emotion/react": "11.11.1",
+      "@emotion/styled": "11.11.0",
+      "@mui/material": "5.14.13",
       "@polymer/polymer": "3.5.1",
       "@types/react": "18.2.0",
       "@types/react-dom": "18.2.0",
@@ -189,7 +195,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "cd16763af8e94fff2fad8968d9ba51de59b35a2a88d33ea051a0b16c06ed795f"
+    "hash": "b7dc5de8e2ddb44ee6f34f9302d027515af8c1c7d1b5c7bbba0843944b4a5d09"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -264,6 +270,9 @@
     "date-fns": "$date-fns",
     "@types/react-dom": "$@types/react-dom",
     "mobile-drag-drop": "$mobile-drag-drop",
-    "typescript-collections": "$typescript-collections"
+    "typescript-collections": "$typescript-collections",
+    "@emotion/react": "$@emotion/react",
+    "@mui/material": "$@mui/material",
+    "@emotion/styled": "$@emotion/styled"
   }
 }

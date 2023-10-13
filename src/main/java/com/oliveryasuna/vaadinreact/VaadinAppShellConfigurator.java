@@ -9,6 +9,9 @@ import com.vaadin.flow.component.page.Viewport;
 @NpmPackage(value = "react", version = "18.2.0")
 @NpmPackage(value = "react-dom", version = "18.2.0")
 @NpmPackage(value = "typescript-collections", version = "1.3.3")
+@NpmPackage(value = "@mui/material", version = "5.14.13")
+@NpmPackage(value = "@emotion/react", version = "11.11.1")
+@NpmPackage(value = "@emotion/styled", version = "11.11.0")
 // TODO: All of these dev once https://github.com/vaadin/flow/pull/17687.
 @NpmPackage(value = "@types/react", version = "18.2.0")
 @NpmPackage(value = "@types/react-dom", version = "18.2.0")

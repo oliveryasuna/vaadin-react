@@ -20,10 +20,11 @@ function createConnectorComponent<
     type: React.ClassType<Props, Type, Class>
 ): ReactComponentConnectorComponent<Props> {
   return ((props: ReactComponentConnectorComponentProps<Props>): JSX.Element => {
-    const [currentProps, setCurrentProps] = React.useState(props.initialProps);
+    const [currentProps, setCurrentProps] = React.useState(props.props);
 
     registerUpdater(
         type,
+        props.name,
         props.reactId,
         ((serializedProps: string): void => {
           setCurrentProps(JSON.parse(serializedProps));
@@ -51,7 +52,7 @@ function createConnector<
 >(
     type: React.ClassType<Props, Type, Class>
 ): ReactComponentConnector {
-  return ((target: HTMLElement, reactId: ReactId, serializedInitialProps: string): void => {
+  return ((target: HTMLElement, name: ReactComponentName, reactId: ReactComponentId, serializedInitialProps: string): void => {
     const initialProps: Props = JSON.parse(serializedInitialProps);
 
     const connectorComponent: ReactComponentConnectorComponent<Props> = createConnectorComponent(type);
@@ -60,8 +61,9 @@ function createConnector<
         .render(React.createElement(
             connectorComponent,
             {
+              name: name,
               reactId: reactId,
-              initialProps: initialProps
+              props: initialProps
             }
         ));
   });
@@ -70,12 +72,14 @@ function createConnector<
 function registerConnector<
     Props extends {}
 >(
+    name: ReactComponentName,
     type: (React.FC<Props> | React.ComponentClass<Props>),
     connector: ReactComponentConnector
 ): void;
 function registerConnector<
     Props extends {}
 >(
+    name: ReactComponentName,
     type: React.ClassType<Props, React.ClassicComponent<Props, React.ComponentState>, React.ClassicComponentClass<Props>>,
     connector: ReactComponentConnector
 ): void;
@@ -84,6 +88,7 @@ function registerConnector<
     Type extends React.Component<Props, React.ComponentState>,
     Class extends React.ComponentClass<Props>
 >(
+    name: ReactComponentName,
     type: React.ClassType<Props, Type, Class>,
     connector: ReactComponentConnector
 ): void {
@@ -91,9 +96,7 @@ function registerConnector<
     throw (new Error('React integration not initialized.'));
   }
 
-  const componentName: string = (type as any).name;
-
-  window.VaadinReact.components[componentName] = {
+  window.VaadinReact.components[name] = {
     connector: connector,
     updaters: new Map()
   };
@@ -103,14 +106,16 @@ function registerUpdater<
     Props extends {}
 >(
     type: (React.FC<Props> | React.ComponentClass<Props>),
-    reactId: ReactId,
+    name: ReactComponentName,
+    reactId: ReactComponentId,
     updater: ReactComponentUpdater
 ): void;
 function registerUpdater<
     Props extends {}
 >(
     type: React.ClassType<Props, React.ClassicComponent<Props, React.ComponentState>, React.ClassicComponentClass<Props>>,
-    reactId: ReactId,
+    name: ReactComponentName,
+    reactId: ReactComponentId,
     updater: ReactComponentUpdater
 ): void;
 function registerUpdater<
@@ -119,35 +124,34 @@ function registerUpdater<
     Class extends React.ComponentClass<Props>
 >(
     type: React.ClassType<Props, Type, Class>,
-    reactId: ReactId,
+    name: ReactComponentName,
+    reactId: ReactComponentId,
     updater: ReactComponentUpdater
 ): void {
   if(!window.VaadinReact || !window.VaadinReact.components) {
     throw (new Error('React integration not initialized.'));
   }
 
-  const componentName: string = (type as any).name;
-
-  if(!window.VaadinReact.components[componentName]) {
-    throw (new Error(`Component ${componentName} not registered.`));
+  if(!window.VaadinReact.components[name]) {
+    throw (new Error(`Component ${name} not registered.`));
   }
 
   // TODO: Why does this happen?
-  if(window.VaadinReact.components[componentName].updaters.has(reactId)) {
+  if(window.VaadinReact.components[name].updaters.has(reactId)) {
     return;
   }
 
-  window.VaadinReact.components[componentName].updaters.set(reactId, updater);
+  window.VaadinReact.components[name].updaters.set(reactId, updater);
 
-  executePendingUpdates(componentName, reactId);
+  executePendingUpdates(name, reactId);
 }
 
-const executePendingUpdates = ((componentName: string, reactId: ReactId): void => {
+const executePendingUpdates = ((name: ReactComponentName, reactId: ReactComponentId): void => {
   if(!window.VaadinReact || !window.VaadinReact.components || !window.VaadinReact.pendingUpdates) {
     throw (new Error('React integration not initialized.'));
   }
 
-  const key: ReactPendingUpdatesKey = `${componentName}-${reactId}`;
+  const key: ReactPendingUpdatesKey = `${name}-${reactId}`;
 
   const pendingUpdates: (Queue<ReactPendingUpdate> | undefined) = window.VaadinReact.pendingUpdates.get(key);
 
@@ -158,7 +162,7 @@ const executePendingUpdates = ((componentName: string, reactId: ReactId): void =
   while(!pendingUpdates.isEmpty()) {
     const pendingUpdate: ReactPendingUpdate = pendingUpdates.dequeue()!;
 
-    window.VaadinReact.components[componentName]!.updaters.get(reactId)!(pendingUpdate.serializedProps);
+    window.VaadinReact.components[name]!.updaters.get(reactId)!(pendingUpdate.serializedProps);
   }
 });
 

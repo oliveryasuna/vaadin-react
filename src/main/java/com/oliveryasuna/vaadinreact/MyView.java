@@ -18,7 +18,10 @@ public class MyView extends Div {
     final MyComponent myComponent2 = new MyComponent();
     myComponent2.setName("Oliver");
 
-    add(myComponent1, myComponent2);
+    final MuiCheckbox muiCheckbox = new MuiCheckbox();
+    muiCheckbox.setLabel("Check me!");
+
+    add(myComponent1, myComponent2, muiCheckbox);
   }
 
 }

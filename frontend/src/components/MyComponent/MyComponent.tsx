@@ -11,7 +11,7 @@ const MyComponent: React.FC<MyComponentProps> = ((props: MyComponentProps): JSX.
   );
 });
 
-registerConnector(MyComponent, createConnector(MyComponent));
+registerConnector('MyComponent', MyComponent, createConnector(MyComponent));
 
 export default MyComponent;
 export type {

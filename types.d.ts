@@ -12,12 +12,14 @@ declare global {
   // React
   //--------------------------------------------------
 
-  type ReactId = string;
+  type ReactComponentName = string;
+  type ReactComponentId = string;
 
-  type ReactComponentConnector = ((target: HTMLElement, reactId: ReactId, serializedInitialProps: string) => void);
+  type ReactComponentConnector = ((target: HTMLElement, name: ReactComponentName, reactId: ReactComponentId, serializedInitialProps: string) => void);
   type ReactComponentConnectorComponentProps<Props> = {
-    reactId: ReactId,
-    initialProps: Props
+    name: ReactComponentName,
+    reactId: ReactComponentId,
+    props: Props
   }
   type ReactComponentConnectorComponent<Props = {}> = React.FC<ReactComponentConnectorComponentProps<Props>>;
 
@@ -25,20 +27,20 @@ declare global {
 
   type ReactComponentHelper = {
     connector: ReactComponentConnector,
-    updaters: Map<ReactId, ReactComponentUpdater>
+    updaters: Map<ReactComponentId, ReactComponentUpdater>
   };
 
   type ReactPendingUpdate = {
-    reactId: ReactId,
+    id: ReactComponentId,
     serializedProps: string
   };
-  type ReactPendingUpdatesKey = `${string}-${ReactId}`
+  type ReactPendingUpdatesKey = `${string}-${ReactComponentId}`
 
   interface Window {
     VaadinReact: {
-      components?: Record<string, ReactComponentHelper>;
+      components?: Record<ReactComponentName, ReactComponentHelper>;
       pendingUpdates?: Map<ReactPendingUpdatesKey, Queue<ReactPendingUpdate>>,
-      scheduleUpdate?: ((componentName: string, reactId: ReactId, serializedProps: string) => void)
+      scheduleUpdate?: ((name: ReactComponentName, reactId: ReactComponentId, serializedProps: string) => void)
     };
   }
 }

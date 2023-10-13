@@ -44,8 +44,13 @@ public class ReactComponent<PROPS> extends Component {
   protected PendingJavaScriptResult bootstrapReact() {
     final Element element = getElement();
 
-    return element
-        .executeJs("window.VaadinReact.components." + getComponentName() + ".connector($0,$1,$2)", element, getReactId(), serializeProps());
+    return element.executeJs(
+        "window.VaadinReact.components." + getComponentName() + ".connector($0,$1,$2,$3)",
+        element,
+        getComponentName(),
+        getReactId(),
+        serializeProps()
+    );
   }
 
   protected PendingJavaScriptResult scheduleUpdate() {
@@ -90,7 +95,7 @@ public class ReactComponent<PROPS> extends Component {
     return propsClass;
   }
 
-  public PROPS getProps() {
+  protected PROPS getProps() {
     if(props == null) {
       props = createProps();
     }
