@@ -21,12 +21,12 @@ public class MuiCheckbox extends ReactComponent<MuiCheckbox.Props> {
   // Methods
   //--------------------------------------------------
 
-  public String getLabel() {
-    return getProps().getLabel();
+  public boolean isChecked() {
+    return getProps().isChecked();
   }
 
-  public void setLabel(final String label) {
-    getProps().setLabel(label);
+  public void setChecked(final boolean checked) {
+    getProps().setChecked(checked);
 
     scheduleUpdate();
   }
@@ -46,17 +46,17 @@ public class MuiCheckbox extends ReactComponent<MuiCheckbox.Props> {
     // Fields
     //--------------------------------------------------
 
-    private String label;
+    private boolean checked;
 
     // Getters/setters
     //--------------------------------------------------
 
-    public String getLabel() {
-      return label;
+    public boolean isChecked() {
+      return checked;
     }
 
-    public void setLabel(final String label) {
-      this.label = label;
+    public void setChecked(final boolean checked) {
+      this.checked = checked;
     }
 
   }
